@@ -1,0 +1,51 @@
+<div class="space-y-8">
+  <!-- Welcome Section -->
+  <div class="bg-white p-12 rounded-lg shadow-md">
+    <div class="text-center max-w-2xl mx-auto">
+      <h1 class="text-4xl font-bold text-[#233559] mb-4">
+        {{ greeting }}, {{ firstName }} {{lastName}}!
+      </h1>
+      <p class="text-xl text-gray-600">Welcome to your personalized dashboard</p>
+    </div>
+  </div>
+
+  <!-- User Details Section -->
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold text-[#233559] mb-4">Your Profile</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <p class="text-gray-600"><span class="font-semibold">Email:</span> {{ userDetails?.email }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Role:</span> {{ userDetails?.role }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Department:</span> {{ userEnrollmentInfo?.branch || 'Not specified' }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Level:</span> {{ userLevel || 'Medium' }}</p>
+      </div>
+      <div class="space-y-2">
+        <p class="text-gray-600"><span class="font-semibold">Enrollment Number:</span> {{ userDetails?.enrollmentNumber }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Batch:</span> {{ userEnrollmentInfo?.duration || 'Not specified' }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Section:</span> {{ userEnrollmentInfo?.section || 'Not specified' }}</p>
+        <p class="text-gray-600"><span class="font-semibold">Roll No:</span> {{ userEnrollmentInfo?.rollNo || 'Not specified' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Access Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-lg font-semibold text-[#233559] mb-4">AI Assistant</h2>
+      <p class="text-gray-600 mb-4">Get instant help with your questions using our AI-powered chat assistant.</p>
+      <a routerLink="/student/chat" class="text-[#c12535] hover:underline">Start Chat →</a>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-lg font-semibold text-[#233559] mb-4">My Tasks</h2>
+      <p class="text-gray-600 mb-4">Manage your tasks, assignments, and deadlines in one place.</p>
+      <a routerLink="/student/tasks" class="text-[#c12535] hover:underline">View Tasks →</a>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-lg font-semibold text-[#233559] mb-4">AI Tutor</h2>
+      <p class="text-gray-600 mb-4">Get instant help with your notes, concepts, and study questions using our AI tutor.</p>
+      <a routerLink="/student/tutor" class="text-[#c12535] hover:underline">Try AI Tutor →</a>
+    </div>
+  </div>
+</div> 

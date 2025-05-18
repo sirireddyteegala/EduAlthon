@@ -1,0 +1,68 @@
+<div class="chat-container">
+  <div class="chat-sidebar">
+    <div class="sidebar-header">
+      <h2>Chat Sessions</h2>
+      <button class="new-chat-btn" (click)="createNewSession()">New Chat</button>
+    </div>
+    <div class="sessions-list">
+      <div *ngFor="let session of chatSessions" 
+           class="session-item" 
+           [class.active]="session.detail_id === currentSessionDetailId"
+           (click)="loadChatSession(session.detail_id)">
+        <div class="session-title">{{ session.title }}</div>
+        <div class="session-date">{{ session.updatedAt | date:'short' }}</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="chat-main">
+    <div class="chat-header">
+      <div class="chat-title" *ngIf="!editingTitle">
+        <h2>{{ currentSession?.title || 'New Chat' }}</h2>
+        <button class="edit-title-btn" (click)="startEditingTitle()" title="Edit title">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+          </svg>
+        </button>
+      </div>
+      <div class="chat-title-edit" *ngIf="editingTitle">
+        <input type="text" 
+               [(ngModel)]="editedTitle" 
+               (keyup.enter)="saveTitle()"
+               (keyup.escape)="cancelEditingTitle()"
+               placeholder="Enter chat title"
+               #titleInput>
+        <div class="edit-actions">
+          <button (click)="saveTitle()">Save</button>
+          <button (click)="cancelEditingTitle()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-messages" #messageContainer>
+      <div *ngFor="let message of messages" 
+           class="message" 
+           [class.user-message]="message.sender === 'user'"
+           [class.assistant-message]="message.sender === 'assistant'">
+        <div class="message-content">{{ message.content }}</div>
+        <div class="message-timestamp">{{ message.timestamp | date:'short' }}</div>
+      </div>
+      <div *ngIf="isLoading" class="loading-indicator">
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="chat-input">
+      <input type="text" 
+             [(ngModel)]="newMessage" 
+             (keyup.enter)="sendMessage()"
+             placeholder="Type your message..."
+             [disabled]="isLoading">
+      <button (click)="sendMessage()" [disabled]="isLoading || !newMessage.trim()">Send</button>
+    </div>
+  </div>
+</div> 

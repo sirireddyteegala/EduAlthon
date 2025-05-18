@@ -1,0 +1,129 @@
+<div class="flex flex-col h-screen bg-gray-50">
+  <!-- Chat Header -->
+  <div class="bg-white border-b p-3 md:p-4 shadow-sm z-10">
+    <div class="flex justify-between items-center">
+      <div class="flex items-center">
+        <img src="https://anurag.edu.in/wp-content/uploads/2023/02/anurag-logo-2.png.webp" alt="Anurag Logo" class="h-8 md:h-10 mr-2 md:mr-3">
+      </div>
+      <div class="flex items-center space-x-2 md:space-x-3">
+        <button (click)="clearChat()" class="text-xs md:text-sm text-[#c12535] hover:text-[#a01e2c] font-medium">
+          Clear Chat
+        </button>
+        <a routerLink="/auth/login" class="text-xs md:text-sm text-white bg-[#233559] hover:bg-[#1a2945] px-2 md:px-3 py-1 md:py-1.5 rounded-md font-medium transition-colors duration-200">
+          Login
+        </a>
+        <a routerLink="/auth/register" class="text-xs md:text-sm text-white bg-[#c12535] hover:bg-[#a01e2c] px-2 md:px-3 py-1 md:py-1.5 rounded-md font-medium transition-colors duration-200">
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Chat Area with constrained width -->
+  <div class="flex-1 flex justify-center overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+    <div class="w-full max-w-md sm:max-w-xl md:max-w-2xl lg:max-w-4xl flex flex-col">
+      <!-- Chat Messages -->
+      <div class="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4" [class.hidden]="messages.length === 0">
+        @for (message of messages; track message.id) {
+          @if (message.role === 'user') {
+            <div class="flex justify-end mb-3 md:mb-4">
+              <div class="bg-[#c12535] text-white rounded-lg py-2 px-3 md:px-4 max-w-[85%] md:max-w-[80%] shadow-sm">
+                <p class="whitespace-pre-wrap text-sm md:text-base">{{ message.content }}</p>
+              </div>
+            </div>
+          } @else {
+            <div class="flex justify-start mb-3 md:mb-4">
+              <div class="bg-[#f8f0f1] border border-gray-200 rounded-lg py-2 px-3 md:px-4 max-w-[85%] md:max-w-[80%] shadow-sm">
+                <p class="whitespace-pre-wrap text-gray-800 text-sm md:text-base">{{ message.content }}</p>
+              </div>
+            </div>
+          }
+        }
+
+        @if (isLoading) {
+          <div class="flex justify-start mb-3 md:mb-4">
+            <div class="bg-[#f8f0f1] border border-gray-200 rounded-lg py-2 px-3 md:px-4 max-w-[85%] md:max-w-[80%] shadow-sm">
+              <div class="flex items-center space-x-2 py-2">
+                <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-[#c12535] animate-pulse"></div>
+                <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-[#c12535] animate-pulse" style="animation-delay: 300ms"></div>
+                <div class="w-2 h-2 md:w-3 md:h-3 rounded-full bg-[#c12535] animate-pulse" style="animation-delay: 600ms"></div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Initial Welcome View -->
+      @if (messages.length === 0) {
+        <div class="flex-1 flex flex-col items-center justify-center p-4">
+          <h1 class="text-3xl md:text-4xl font-bold text-[#233559] mb-4 md:mb-5 text-center">ANURAG AI</h1>
+          <p class="text-gray-700 mb-6 md:mb-8 text-center max-w-sm md:max-w-xl text-base md:text-lg">Ask me anything about your university needs. I'm here to help you with information, guidance, and support.</p>
+          
+          <!-- Centered search bar when empty -->
+          <div class="w-full max-w-sm sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto transition-all duration-500 ease-in-out px-4 sm:px-0">
+            <form (ngSubmit)="sendMessage()" class="flex items-center space-x-2 mb-6">
+              <input 
+                type="text" 
+                [(ngModel)]="userQuery" 
+                name="userQuery"
+                placeholder="Type your message here..." 
+                class="flex-1 border border-gray-300 rounded-full py-3 md:py-4 px-4 md:px-5 text-base md:text-lg focus:outline-none focus:ring-2 focus:ring-[#c12535] focus:border-transparent shadow-lg"
+              />
+              <button 
+                type="submit" 
+                [disabled]="!userQuery.trim() || isLoading"
+                class="bg-[#233559] hover:bg-[#1a2945] text-white p-3 md:p-4 rounded-full disabled:opacity-50 shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 md:w-6 md:h-6">
+                  <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+                </svg>
+              </button>
+            </form>
+
+            <!-- Suggested Questions -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mt-2">
+              <button (click)="setQuery('Tell me about admission process')" class="bg-white hover:bg-gray-50 text-left p-3 md:p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow transition-all duration-200">
+                <p class="text-sm md:text-base font-medium text-[#233559]">Admission Process</p>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">Learn about the steps to apply</p>
+              </button>
+              <button (click)="setQuery('What are the available courses?')" class="bg-white hover:bg-gray-50 text-left p-3 md:p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow transition-all duration-200">
+                <p class="text-sm md:text-base font-medium text-[#233559]">Available Courses</p>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">Explore academic programs</p>
+              </button>
+              <button (click)="setQuery('How can I check my exam results?')" class="bg-white hover:bg-gray-50 text-left p-3 md:p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow transition-all duration-200">
+                <p class="text-sm md:text-base font-medium text-[#233559]">Exam Results</p>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">Access your academic performance</p>
+              </button>
+              <button (click)="setQuery('What are the campus facilities?')" class="bg-white hover:bg-gray-50 text-left p-3 md:p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow transition-all duration-200">
+                <p class="text-sm md:text-base font-medium text-[#233559]">Campus Facilities</p>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">Discover amenities and resources</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Input Form - Only shown when there are messages -->
+      @if (messages.length > 0) {
+        <div class="border-t bg-white p-3 md:p-4 animate-slide-up">
+          <form (ngSubmit)="sendMessage()" class="flex items-center space-x-2">
+            <input 
+              type="text" 
+              [(ngModel)]="userQuery" 
+              name="userQuery"
+              placeholder="Type your message here..." 
+              class="flex-1 border border-gray-300 rounded-full py-2.5 md:py-3 px-3 md:px-4 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-[#c12535] focus:border-transparent"
+            />
+            <button 
+              type="submit" 
+              [disabled]="!userQuery.trim() || isLoading"
+              class="bg-[#233559] hover:bg-[#1a2945] text-white p-2.5 md:p-3 rounded-full disabled:opacity-50 shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 md:w-5 md:h-5">
+                <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      }
+    </div>
+  </div>
+</div>

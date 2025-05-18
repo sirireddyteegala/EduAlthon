@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@layer base {
+  html {
+    font-family: 'DM Sans','Poppins', 'Inter', system-ui, sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

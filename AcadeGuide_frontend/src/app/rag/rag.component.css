@@ -1,0 +1,81 @@
+/* Custom scrollbar for the chat container */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Animation for the typing indicator */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+/* Animation for the search bar movement */
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out forwards;
+}
+
+/* Message bubble styles */
+.bg-\[\#c12535\] {
+  position: relative;
+  border-top-right-radius: 0;
+}
+
+.bg-\[\#c12535\]:after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 0;
+  border-left: 8px solid #c12535;
+  border-top: 0;
+  border-bottom: 8px solid transparent;
+}
+
+.bg-\[\#f8f0f1\] {
+  position: relative;
+  border-top-left-radius: 0;
+}
+
+.bg-\[\#f8f0f1\]:before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 0;
+  border-right: 8px solid #f8f0f1;
+  border-top: 0;
+  border-bottom: 8px solid transparent;
+}

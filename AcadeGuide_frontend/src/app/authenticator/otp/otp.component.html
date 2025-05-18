@@ -1,0 +1,41 @@
+@if(isLoading === true){
+    <app-loading-spinner/>
+  }
+  @else{
+    <div class="max-w-lg mx-auto text-center px-4 sm:px-8 py-10 bg-white rounded-lg">
+        <header class="mb-8">
+            <h1 class="text-2xl font-bold mb-1 text-[#233559]">OTP Verification</h1>
+            <p class="text-[15px] text-gray-600">{{data?.message}}</p>
+        </header>
+        <form [formGroup]="otpForm" (ngSubmit)="onSubmit()">
+            @if(message){
+                <div class="bg-[#f8f0f1] border border-[#c12535] text-[#c12535] px-4 py-3 mb-2 rounded-lg relative" role="alert">
+                    <strong class="font-bold">{{message}}!</strong>
+                    <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                        <svg (click)="closeMessage()" class="fill-current h-6 w-6 text-[#c12535]" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                    </span>
+                </div>
+            }
+            <div class="flex items-center justify-center gap-2 sm:gap-3">
+                <input
+                    *ngFor="let control of otpControls; let i = index"
+                    formControlName="{{control}}"
+                    type="text"
+                    class="w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-xl font-normal text-gray-700 bg-gray-100 border border-gray-200 hover:border-[#c12535] appearance-none rounded-lg p-2 sm:p-4 outline-none focus:bg-white focus:border-[#c12535] focus:ring-2 focus:ring-[#f8f0f1]"
+                    maxlength="1"
+                    (input)="onInput($event, i)"
+                    (keydown)="onKeyDown($event, i)"
+                    (focus)="onFocus($event)"
+                    (paste)="onPaste($event)" />
+            </div>
+            <div class="max-w-[260px] mx-auto mt-6">
+                <button type="submit"
+                    class="w-full inline-flex justify-center whitespace-nowrap rounded-lg bg-[#c12535] hover:bg-[#a01e2c] px-3.5 py-2.5 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#f8f0f1] transition-colors duration-200">Verify OTP</button>
+            </div>
+        </form>
+        <div class="text-sm text-gray-600 mt-4">Didn't receive code? <a class="font-medium text-[#233559] hover:text-[#1a2945]" href="#0">Resend</a></div>
+        <div class="mt-4">
+            <a routerLink="/assistant" class="text-sm text-[#233559] hover:text-[#1a2945] font-medium">Return to Assistant</a>
+        </div>
+    </div>
+  }
